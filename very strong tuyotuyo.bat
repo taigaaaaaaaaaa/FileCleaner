@@ -1,10 +1,10 @@
 @echo off
 setlocal enableextensions
 
-:: 邂｡逅?閠?讓ｩ髯舌メ繧ｧ繝?繧ｯ?ｼ域ｨｩ髯舌′縺ｪ縺?蝣ｴ蜷医?ｯ閾ｪ蜍墓??譬ｼ?ｼ?
+:: 管理者権限チェック（権限がない場合は自動昇格）
 openfiles >nul 2>&1
 if %errorlevel% neq 0 (
-    echo 邂｡逅?閠?讓ｩ髯舌〒蜀榊ｮ溯｡後＠縺ｦ縺?縺ｾ縺?...
+    echo 管理者権限で再実行しています...
     powershell -Command "Start-Process '%~f0' -Verb RunAs"
     exit /b
 )
