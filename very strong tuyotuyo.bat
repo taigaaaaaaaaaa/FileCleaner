@@ -1,10 +1,10 @@
 @echo off
 setlocal enableextensions
 
-:: ŠÇ—ŽÒŒ ŒÀƒ`ƒFƒbƒN
+:: ç®¡ç†è€…æ¨©é™ãƒã‚§ãƒƒã‚¯
 openfiles >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ŠÇ—ŽÒŒ ŒÀ‚ÅÄŽÀs‚µ‚Ä‚¢‚Ü‚·...
+    echo ç®¡ç†è€…æ¨©é™ã§å†å®Ÿè¡Œã—ã¦ã„ã¾ã™...
     powershell -Command "Start-Process '%~f0' -Verb RunAs"
     exit /b
 )
@@ -12,19 +12,19 @@ if %errorlevel% neq 0 (
 :MENU
 cls
 echo =====================================
-echo          Taiga Cleaner v6.1
+echo             Taiga Cleaner 
 echo =====================================
 echo.
-echo  1. Temp ƒtƒHƒ‹ƒ_íœ
-echo  2. Windows Update ƒLƒƒƒbƒVƒ…íœ
-echo  3. Installer ƒtƒHƒ‹ƒ_íœiˆÀ‘S‚È‚à‚Ì‚¾‚¯j
-echo  4. AppData ƒLƒƒƒbƒVƒ…íœ
-echo  5. Windows ƒƒOíœ
-echo  6. WinSxS ƒNƒŠ[ƒ“ƒAƒbƒv
-echo  7. ‘S•”ŽÀs
-echo  0. I—¹
+echo  1. Temp ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤
+echo  2. Windows Update ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤
+echo  3. Installer ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤ï¼ˆå®‰å…¨ãªã‚‚ã®ã ã‘ï¼‰
+echo  4. AppData ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤
+echo  5. Windows ãƒ­ã‚°å‰Šé™¤
+echo  6. WinSxS ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
+echo  7. å…¨éƒ¨å®Ÿè¡Œ
+echo  0. çµ‚äº†
 echo.
-choice /c 12345670 /n /m "”Ô†‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢: "
+choice /c 12345670 /n /m "ç•ªå·ã‚’é¸æŠžã—ã¦ãã ã•ã„: "
 
 set "opt=%errorlevel%"
 
@@ -40,7 +40,7 @@ if %opt%==8 goto END
 
 :TEMP
 echo =====================================
-echo   Temp ƒtƒHƒ‹ƒ_‚ðíœ‚µ‚Ä‚¢‚Ü‚·...
+echo   Temp ãƒ•ã‚©ãƒ«ãƒ€ã‚’å‰Šé™¤ã—ã¦ã„ã¾ã™...
 echo =====================================
 taskkill /f /im chrome.exe >nul 2>&1
 taskkill /f /im msedge.exe >nul 2>&1
@@ -53,14 +53,14 @@ for /d %%i in ("%LOCALAPPDATA%\Temp\*") do rd /s /q "%%i" 2>nul
 del /q /f /s "C:\Windows\Temp\*" 2>nul
 for /d %%i in ("C:\Windows\Temp\*") do rd /s /q "%%i" 2>nul
 
-echo Temp ƒtƒHƒ‹ƒ_íœŠ®—¹B
+echo Temp ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤å®Œäº†ã€‚
 pause
 goto MENU
 
 
 :UPDATE
 echo =====================================
-echo   Windows Update ƒLƒƒƒbƒVƒ…íœ’†...
+echo   Windows Update ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤ä¸­...
 echo =====================================
 net stop wuauserv >nul 2>&1
 net stop bits >nul 2>&1
@@ -76,26 +76,26 @@ net start dosvc >nul 2>&1
 net start bits >nul 2>&1
 net start wuauserv >nul 2>&1
 
-echo Windows Update ƒLƒƒƒbƒVƒ…íœŠ®—¹B
+echo Windows Update ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤å®Œäº†ã€‚
 pause
 goto MENU
 
 
 :INSTALLER
 echo =====================================
-echo   Installer ƒtƒHƒ‹ƒ_íœ’†...
+echo   Installer ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤ä¸­...
 echo =====================================
 for %%i in (C:\Windows\Installer\*.tmp) do del /f /q "%%i" 2>nul
 for %%i in (C:\Windows\Installer\*.bak) do del /f /q "%%i" 2>nul
 
-echo Installer ƒtƒHƒ‹ƒ_íœŠ®—¹B
+echo Installer ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤å®Œäº†ã€‚
 pause
 goto MENU
 
 
 :APPDATA
 echo =====================================
-echo   AppData [‘wƒLƒƒƒbƒVƒ…íœ’†...
+echo   AppData æ·±å±¤ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤ä¸­...
 echo =====================================
 taskkill /f /im chrome.exe >nul 2>&1
 taskkill /f /im msedge.exe >nul 2>&1
@@ -130,14 +130,14 @@ for /d %%i in ("%LOCALAPPDATA%\Discord\Code Cache\*") do rd /s /q "%%i" 2>nul
 del /q /f /s "%LOCALAPPDATA%\Discord\GPUCache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Discord\GPUCache\*") do rd /s /q "%%i" 2>nul
 
-echo AppData ƒLƒƒƒbƒVƒ…íœŠ®—¹B
+echo AppData ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤å®Œäº†ã€‚
 pause
 goto MENU
 
 
 :LOGS
 echo =====================================
-echo   Windows ƒƒOíœ’†...
+echo   Windows ãƒ­ã‚°å‰Šé™¤ä¸­...
 echo =====================================
 del /q /f /s "C:\Windows\Logs\*.log" 2>nul
 del /q /f /s "C:\Windows\Logs\*.txt" 2>nul
@@ -147,18 +147,18 @@ del /q /f /s "C:\Windows\System32\LogFiles\*.log" 2>nul
 del /q /f /s "C:\Windows\System32\LogFiles\*.txt" 2>nul
 for /d %%i in ("C:\Windows\System32\LogFiles\*") do rd /s /q "%%i" 2>nul
 
-echo Windows ƒƒOíœŠ®—¹B
+echo Windows ãƒ­ã‚°å‰Šé™¤å®Œäº†ã€‚
 pause
 goto MENU
 
 
 :WINSXS
 echo =====================================
-echo   WinSxS ƒNƒŠ[ƒ“ƒAƒbƒv’†...i‚±‚Ìˆ—‚É‚ÍŽžŠÔ‚ª‚©‚©‚è‚Ü‚·Bj
+echo   WinSxS ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—ä¸­...ï¼ˆã“ã®å‡¦ç†ã«ã¯æ™‚é–“ãŒã‹ã‹ã‚Šã¾ã™ã€‚ï¼‰
 echo =====================================
 dism /online /cleanup-image /startcomponentcleanup /resetbase
 
-echo WinSxS ƒNƒŠ[ƒ“ƒAƒbƒvŠ®—¹B
+echo WinSxS ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—å®Œäº†ã€‚
 pause
 goto MENU
 
@@ -174,5 +174,5 @@ goto MENU
 
 
 :END
-echo I—¹‚µ‚Ü‚·...
+echo çµ‚äº†ã—ã¾ã™...
 exit /b
