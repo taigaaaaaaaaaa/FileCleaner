@@ -1,41 +1,67 @@
 @echo off
 setlocal enableextensions
 
-:: ç®¡ç†è€…æ¨©é™ãƒã‚§ãƒƒã‚¯ï¼ˆæ¨©é™ãŒãªã„å ´åˆã¯è‡ªå‹•æ˜‡æ ¼ï¼‰
+:: ŠÇ—ÒŒ ŒÀƒ`ƒFƒbƒN
 openfiles >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ç®¡ç†è€…æ¨©é™ã§å†å®Ÿè¡Œã—ã¦ã„ã¾ã™...
+    echo ŠÇ—ÒŒ ŒÀ‚ÅÄÀs‚µ‚Ä‚¢‚Ü‚·...
     powershell -Command "Start-Process '%~f0' -Verb RunAs"
     exit /b
 )
 
-echo ================================
-echo   Closing targeted applications...
-echo ================================
+:MENU
+cls
+echo =====================================
+echo          Taiga Cleaner v6.1
+echo =====================================
+echo.
+echo  1. Temp ƒtƒHƒ‹ƒ_íœ
+echo  2. Windows Update ƒLƒƒƒbƒVƒ…íœ
+echo  3. Installer ƒtƒHƒ‹ƒ_íœiˆÀ‘S‚È‚à‚Ì‚¾‚¯j
+echo  4. AppData ƒLƒƒƒbƒVƒ…íœ
+echo  5. Windows ƒƒOíœ
+echo  6. WinSxS ƒNƒŠ[ƒ“ƒAƒbƒv
+echo  7. ‘S•”Às
+echo  0. I—¹
+echo.
+choice /c 12345670 /n /m "”Ô†‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢: "
+
+set "opt=%errorlevel%"
+
+if %opt%==1 goto TEMP
+if %opt%==2 goto UPDATE
+if %opt%==3 goto INSTALLER
+if %opt%==4 goto APPDATA
+if %opt%==5 goto LOGS
+if %opt%==6 goto WINSXS
+if %opt%==7 goto ALL
+if %opt%==8 goto END
+
+
+:TEMP
+echo =====================================
+echo   Temp ƒtƒHƒ‹ƒ_‚ğíœ‚µ‚Ä‚¢‚Ü‚·...
+echo =====================================
 taskkill /f /im chrome.exe >nul 2>&1
 taskkill /f /im msedge.exe >nul 2>&1
 taskkill /f /im msedgewebview2.exe >nul 2>&1
 taskkill /f /im Discord.exe >nul 2>&1
-echo Done.
-echo.
 
-
-echo ================================
-echo   Cleaning Temp folders...
-echo ================================
 del /q /f /s "%LOCALAPPDATA%\Temp\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Temp\*") do rd /s /q "%%i" 2>nul
 
 del /q /f /s "C:\Windows\Temp\*" 2>nul
 for /d %%i in ("C:\Windows\Temp\*") do rd /s /q "%%i" 2>nul
 
-echo Temp folders cleaned.
-echo.
+echo Temp ƒtƒHƒ‹ƒ_íœŠ®—¹B
+pause
+goto MENU
 
 
-echo ================================
-echo   Cleaning Windows Update cache...
-echo ================================
+:UPDATE
+echo =====================================
+echo   Windows Update ƒLƒƒƒbƒVƒ…íœ’†...
+echo =====================================
 net stop wuauserv >nul 2>&1
 net stop bits >nul 2>&1
 net stop dosvc >nul 2>&1
@@ -50,64 +76,69 @@ net start dosvc >nul 2>&1
 net start bits >nul 2>&1
 net start wuauserv >nul 2>&1
 
-echo Windows Update cache cleaned.
-echo.
+echo Windows Update ƒLƒƒƒbƒVƒ…íœŠ®—¹B
+pause
+goto MENU
 
 
-echo ================================
-echo   Cleaning Installer (safe mode)...
-echo ================================
+:INSTALLER
+echo =====================================
+echo   Installer ƒtƒHƒ‹ƒ_íœ’†...
+echo =====================================
 for %%i in (C:\Windows\Installer\*.tmp) do del /f /q "%%i" 2>nul
 for %%i in (C:\Windows\Installer\*.bak) do del /f /q "%%i" 2>nul
 
-echo Installer safe-clean completed.
-echo.
+echo Installer ƒtƒHƒ‹ƒ_íœŠ®—¹B
+pause
+goto MENU
 
 
-echo ================================
-echo   Deep cleaning AppData caches...
-echo ================================
+:APPDATA
+echo =====================================
+echo   AppData [‘wƒLƒƒƒbƒVƒ…íœ’†...
+echo =====================================
+taskkill /f /im chrome.exe >nul 2>&1
+taskkill /f /im msedge.exe >nul 2>&1
+taskkill /f /im msedgewebview2.exe >nul 2>&1
+taskkill /f /im Discord.exe >nul 2>&1
+
 :: INetCache
 del /q /f /s "%LOCALAPPDATA%\Microsoft\Windows\INetCache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Microsoft\Windows\INetCache\*") do rd /s /q "%%i" 2>nul
 
-:: Chrome Cache
+:: Chrome
 del /q /f /s "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Cache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Google\Chrome\User Data\Default\Cache\*") do rd /s /q "%%i" 2>nul
-
 del /q /f /s "%LOCALAPPDATA%\Google\Chrome\User Data\Default\Code Cache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Google\Chrome\User Data\Default\Code Cache\*") do rd /s /q "%%i" 2>nul
-
 del /q /f /s "%LOCALAPPDATA%\Google\Chrome\User Data\Default\GPUCache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Google\Chrome\User Data\Default\GPUCache\*") do rd /s /q "%%i" 2>nul
 
-:: Edge Cache
+:: Edge
 del /q /f /s "%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Cache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Cache\*") do rd /s /q "%%i" 2>nul
-
 del /q /f /s "%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Code Cache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\Code Cache\*") do rd /s /q "%%i" 2>nul
-
 del /q /f /s "%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\GPUCache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Microsoft\Edge\User Data\Default\GPUCache\*") do rd /s /q "%%i" 2>nul
 
-:: Discord Cache
+:: Discord
 del /q /f /s "%LOCALAPPDATA%\Discord\Cache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Discord\Cache\*") do rd /s /q "%%i" 2>nul
-
 del /q /f /s "%LOCALAPPDATA%\Discord\Code Cache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Discord\Code Cache\*") do rd /s /q "%%i" 2>nul
-
 del /q /f /s "%LOCALAPPDATA%\Discord\GPUCache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Discord\GPUCache\*") do rd /s /q "%%i" 2>nul
 
-echo AppData deep-clean completed.
-echo.
+echo AppData ƒLƒƒƒbƒVƒ…íœŠ®—¹B
+pause
+goto MENU
 
 
-echo ================================
-echo   Cleaning Windows log files...
-echo ================================
+:LOGS
+echo =====================================
+echo   Windows ƒƒOíœ’†...
+echo =====================================
 del /q /f /s "C:\Windows\Logs\*.log" 2>nul
 del /q /f /s "C:\Windows\Logs\*.txt" 2>nul
 for /d %%i in ("C:\Windows\Logs\*") do rd /s /q "%%i" 2>nul
@@ -116,24 +147,32 @@ del /q /f /s "C:\Windows\System32\LogFiles\*.log" 2>nul
 del /q /f /s "C:\Windows\System32\LogFiles\*.txt" 2>nul
 for /d %%i in ("C:\Windows\System32\LogFiles\*") do rd /s /q "%%i" 2>nul
 
-echo Windows logs cleaned.
-echo.
+echo Windows ƒƒOíœŠ®—¹B
+pause
+goto MENU
 
 
-echo ================================
-echo   WinSxS Component Cleanup...ï¼ˆã“ã®å‡¦ç†ã«ã¯æ™‚é–“ãŒã‹ã‹ã‚Šã¾ã™â€¦ï¼‰
-echo ================================
+:WINSXS
+echo =====================================
+echo   WinSxS ƒNƒŠ[ƒ“ƒAƒbƒv’†...i‚±‚Ìˆ—‚É‚ÍŠÔ‚ª‚©‚©‚è‚Ü‚·Bj
+echo =====================================
 dism /online /cleanup-image /startcomponentcleanup /resetbase
 
-echo WinSxS cleanup completed.
-echo.
-
-
-echo ================================
-echo   Showing disk free space...
-echo ================================
-powershell -Command "Get-CimInstance Win32_LogicalDisk | Where-Object {$_.DriveType -eq 3} | Select-Object DeviceID, @{Name='FreeSpace(GB)';Expression={[math]::round($_.FreeSpace/1GB,2)}}, @{Name='Size(GB)';Expression={[math]::round($_.Size/1GB,2)}} | Format-Table -AutoSize"
-
-echo.
-echo All cleaning tasks completed. code by taiga.
+echo WinSxS ƒNƒŠ[ƒ“ƒAƒbƒvŠ®—¹B
 pause
+goto MENU
+
+
+:ALL
+call :TEMP
+call :UPDATE
+call :INSTALLER
+call :APPDATA
+call :LOGS
+call :WINSXS
+goto MENU
+
+
+:END
+echo I—¹‚µ‚Ü‚·...
+exit /b
