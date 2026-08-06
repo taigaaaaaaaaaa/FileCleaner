@@ -1,10 +1,10 @@
 @echo off
 setlocal enableextensions
 
-:: ŠÇ—ÒŒ ŒÀƒ`ƒFƒbƒNiŒ ŒÀ‚ª‚È‚¢ê‡‚Í©“®¸Šij
+:: ç®¡ç†è€…æ¨©é™ãƒã‚§ãƒƒã‚¯ï¼ˆæ¨©é™ãŒãªã„å ´åˆã¯è‡ªå‹•æ˜‡æ ¼ï¼‰
 openfiles >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ŠÇ—ÒŒ ŒÀ‚ÅÄÀs‚µ‚Ä‚¢‚Ü‚·...
+    echo ç®¡ç†è€…æ¨©é™ã§å†å®Ÿè¡Œã—ã¦ã„ã¾ã™...
     powershell -Command "Start-Process '%~f0' -Verb RunAs"
     exit /b
 )
@@ -121,7 +121,7 @@ echo.
 
 
 echo ================================
-echo   WinSxS Component Cleanup...
+echo   WinSxS Component Cleanup...ï¼ˆã“ã®å‡¦ç†ã«ã¯æ™‚é–“ãŒã‹ã‹ã‚Šã¾ã™â€¦ï¼‰
 echo ================================
 dism /online /cleanup-image /startcomponentcleanup /resetbase
 
