@@ -1,31 +1,33 @@
 @echo off
 setlocal enableextensions
 
-:: ç®¡ç†è€…æ¨©é™ãƒã‚§ãƒƒã‚¯
-openfiles >nul 2>&1
+:: ŠÇ—ŽÒŒ ŒÀƒ`ƒFƒbƒN
+net session >nul 2>&1
 if %errorlevel% neq 0 (
-    echo ç®¡ç†è€…æ¨©é™ã§å†å®Ÿè¡Œã—ã¦ã„ã¾ã™...
+    echo ŠÇ—ŽÒŒ ŒÀ‚ÅÄŽÀs‚µ‚Ä‚¢‚Ü‚·...
     powershell -Command "Start-Process '%~f0' -Verb RunAs"
     exit /b
 )
 
+set "RUNMODE=SINGLE"
+
 :MENU
 cls
 echo =====================================
-echo             Taiga Cleaner 
+echo            Taiga Cleaner 
 echo =====================================
 echo.
-echo  1. Temp ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤
-echo  2. Windows Update ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤
-echo  3. Installer ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤ï¼ˆå®‰å…¨ãªã‚‚ã®ã ã‘ï¼‰
-echo  4. AppData ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤
-echo  5. Windows ãƒ­ã‚°å‰Šé™¤
-echo  6. WinSxS ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
-echo  7. å…¨éƒ¨å®Ÿè¡Œ
-echo  0. çµ‚äº†
+echo  1. Temp ƒtƒHƒ‹ƒ_íœ
+echo  2. Windows Update ƒLƒƒƒbƒVƒ…íœ
+echo  3. Installer ƒtƒHƒ‹ƒ_íœiˆÀ‘S‚È‚à‚Ì‚¾‚¯j
+echo  4. AppData ƒLƒƒƒbƒVƒ…íœ
+echo  5. Windows ƒƒOíœ
+echo  6. WinSxS ƒNƒŠ[ƒ“ƒAƒbƒv
+echo  7. ‘S•”ŽÀs
+echo  0. I—¹
 echo.
-choice /c 12345670 /n /m "ç•ªå·ã‚’é¸æŠžã—ã¦ãã ã•ã„: "
 
+choice /c 12345670 /n /m "”Ô†‚ð‘I‘ð‚µ‚Ä‚­‚¾‚³‚¢: "
 set "opt=%errorlevel%"
 
 if %opt%==1 goto TEMP
@@ -37,11 +39,14 @@ if %opt%==6 goto WINSXS
 if %opt%==7 goto ALL
 if %opt%==8 goto END
 
+goto MENU
+
 
 :TEMP
 echo =====================================
-echo   Temp ãƒ•ã‚©ãƒ«ãƒ€ã‚’å‰Šé™¤ã—ã¦ã„ã¾ã™...
+echo   Temp ƒtƒHƒ‹ƒ_‚ðíœ‚µ‚Ä‚¢‚Ü‚·...
 echo =====================================
+
 taskkill /f /im chrome.exe >nul 2>&1
 taskkill /f /im msedge.exe >nul 2>&1
 taskkill /f /im msedgewebview2.exe >nul 2>&1
@@ -53,15 +58,17 @@ for /d %%i in ("%LOCALAPPDATA%\Temp\*") do rd /s /q "%%i" 2>nul
 del /q /f /s "C:\Windows\Temp\*" 2>nul
 for /d %%i in ("C:\Windows\Temp\*") do rd /s /q "%%i" 2>nul
 
-echo Temp ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤å®Œäº†ã€‚
+echo Temp ƒtƒHƒ‹ƒ_íœŠ®—¹B
+if "%RUNMODE%"=="ALL" goto :EOF
 pause
 goto MENU
 
 
 :UPDATE
 echo =====================================
-echo   Windows Update ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤ä¸­...
+echo   Windows Update ƒLƒƒƒbƒVƒ…íœ’†...
 echo =====================================
+
 net stop wuauserv >nul 2>&1
 net stop bits >nul 2>&1
 net stop dosvc >nul 2>&1
@@ -76,27 +83,31 @@ net start dosvc >nul 2>&1
 net start bits >nul 2>&1
 net start wuauserv >nul 2>&1
 
-echo Windows Update ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤å®Œäº†ã€‚
+echo Windows Update ƒLƒƒƒbƒVƒ…íœŠ®—¹B
+if "%RUNMODE%"=="ALL" goto :EOF
 pause
 goto MENU
 
 
 :INSTALLER
 echo =====================================
-echo   Installer ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤ä¸­...
+echo   Installer ƒtƒHƒ‹ƒ_íœ’†...
 echo =====================================
+
 for %%i in (C:\Windows\Installer\*.tmp) do del /f /q "%%i" 2>nul
 for %%i in (C:\Windows\Installer\*.bak) do del /f /q "%%i" 2>nul
 
-echo Installer ãƒ•ã‚©ãƒ«ãƒ€å‰Šé™¤å®Œäº†ã€‚
+echo Installer ƒtƒHƒ‹ƒ_íœŠ®—¹B
+if "%RUNMODE%"=="ALL" goto :EOF
 pause
 goto MENU
 
 
 :APPDATA
 echo =====================================
-echo   AppData æ·±å±¤ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤ä¸­...
+echo   AppData ƒLƒƒƒbƒVƒ…íœ’†...
 echo =====================================
+
 taskkill /f /im chrome.exe >nul 2>&1
 taskkill /f /im msedge.exe >nul 2>&1
 taskkill /f /im msedgewebview2.exe >nul 2>&1
@@ -130,15 +141,17 @@ for /d %%i in ("%LOCALAPPDATA%\Discord\Code Cache\*") do rd /s /q "%%i" 2>nul
 del /q /f /s "%LOCALAPPDATA%\Discord\GPUCache\*" 2>nul
 for /d %%i in ("%LOCALAPPDATA%\Discord\GPUCache\*") do rd /s /q "%%i" 2>nul
 
-echo AppData ã‚­ãƒ£ãƒƒã‚·ãƒ¥å‰Šé™¤å®Œäº†ã€‚
+echo AppData ƒLƒƒƒbƒVƒ…íœŠ®—¹B
+if "%RUNMODE%"=="ALL" goto :EOF
 pause
 goto MENU
 
 
 :LOGS
 echo =====================================
-echo   Windows ãƒ­ã‚°å‰Šé™¤ä¸­...
+echo   Windows ƒƒOíœ’†...
 echo =====================================
+
 del /q /f /s "C:\Windows\Logs\*.log" 2>nul
 del /q /f /s "C:\Windows\Logs\*.txt" 2>nul
 for /d %%i in ("C:\Windows\Logs\*") do rd /s /q "%%i" 2>nul
@@ -147,32 +160,40 @@ del /q /f /s "C:\Windows\System32\LogFiles\*.log" 2>nul
 del /q /f /s "C:\Windows\System32\LogFiles\*.txt" 2>nul
 for /d %%i in ("C:\Windows\System32\LogFiles\*") do rd /s /q "%%i" 2>nul
 
-echo Windows ãƒ­ã‚°å‰Šé™¤å®Œäº†ã€‚
+echo Windows ƒƒOíœŠ®—¹B
+if "%RUNMODE%"=="ALL" goto :EOF
 pause
 goto MENU
 
 
 :WINSXS
 echo =====================================
-echo   WinSxS ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—ä¸­...ï¼ˆã“ã®å‡¦ç†ã«ã¯æ™‚é–“ãŒã‹ã‹ã‚Šã¾ã™ã€‚ï¼‰
+echo   WinSxS ƒNƒŠ[ƒ“ƒAƒbƒv’†...iŽžŠÔ‚ª‚©‚©‚è‚Ü‚·j
 echo =====================================
+
 dism /online /cleanup-image /startcomponentcleanup /resetbase
 
-echo WinSxS ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—å®Œäº†ã€‚
+echo WinSxS ƒNƒŠ[ƒ“ƒAƒbƒvŠ®—¹B
+if "%RUNMODE%"=="ALL" goto :EOF
 pause
 goto MENU
 
 
 :ALL
+set "RUNMODE=ALL"
 call :TEMP
 call :UPDATE
 call :INSTALLER
 call :APPDATA
 call :LOGS
 call :WINSXS
+set "RUNMODE=SINGLE"
+echo ‘S‚Ä‚Ìˆ—‚ªŠ®—¹‚µ‚Ü‚µ‚½B
+pause
 goto MENU
 
 
 :END
-echo çµ‚äº†ã—ã¾ã™...
+echo I—¹‚µ‚Ü‚·...
 exit /b
+
